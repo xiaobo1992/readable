@@ -20,7 +20,9 @@ class Post extends Component{
     }
 
     handleDeletePost = (event, id) =>{
-      this.props.deletePost(id);
+      this.props.deletePost(id).then(
+        this.props.history.push("/")
+      );
     }
 
     handleUpVotePost = (event, id) => {
@@ -35,9 +37,9 @@ class Post extends Component{
       this.props.history.push(`/edit/post/${this.state.id}`)
     }
 
-
     render() {
       const post = this.props.posts[this.state.id];
+
       return(
         <Card>
             <Link to={"/"+ post.category +"/"+ post.id}>

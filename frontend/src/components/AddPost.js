@@ -5,24 +5,32 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import {submitPost} from '../actions/postActions'
 import {connect} from 'react-redux';
-import { Field, reduxForm } from 'redux-form'
-import serializeFrom from 'form-serialize'
 import * as UUID from '../util/uuid'
 
 class AddPost extends Component {
   constructor(props){
   	super(props);
   	this.state = {
-      category:null,
+      category:"",
+      title:"",
+      author:"",
+      body:"",
+      categoryError:"",
+      titleError:"",
+      authorError:"",
+      bodyError:"",
     };
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    let post = serializeFrom(event.target,{hash:true});
-    if (this.state.category == null) {
+    if (!this.validate()) {
       return;
     }
+    let post = {};
+    post['title'] = this.state.title;
+    post['author'] = this.state.author;
+    post['body'] = this.state.body;
     post['category'] = this.state.category;
     post['timestamp'] = Date.now();
     post['id'] = UUID.guid();
@@ -38,6 +46,41 @@ class AddPost extends Component {
     this.props.history.goBack()
   }
 
+  change = e => {
+    this.setState({[e.target.name] : e.target.value})
+  }
+
+  validate = () => {
+    let pass = true;
+    this.setState({
+      categoryError :"",
+      titleError : "",
+      authorError : "",
+      bodyError : ""
+    })
+
+    if (!this.state.title) {
+      pass = false;
+      this.setState({titleError:"Requeired"})
+    }
+
+    if (!this.state.category) {
+      pass = false;
+      this.setState({categoryError:"Requeired"})
+    }
+
+    if (!this.state.author) {
+      pass = false;
+      this.setState({authorError:"Requeired"})
+    }
+
+    if (!this.state.body) {
+      pass = false;
+      this.setState({bodyError:"Requeired"})
+    }
+    return pass;
+  }
+
   render() {
     const {categories} = this.props;
     const keys = Object.keys(categories);
@@ -45,11 +88,19 @@ class AddPost extends Component {
         <div>
           <h2>New Post</h2>
           <form onSubmit={this.handleSubmit}>
-            <TextField name="title" id="title" hintText="Title" fullWidth={true}/><br/>
-            <TextField name="author" id="author" hintText="Author" fullWidth={true}/><br/>
-            <TextField name="body" id="body" hintText="Write Post" multiLine={true} rows={2} rowsMax={4} fullWidth={true}/><br/>
+            <TextField name="title" id="title" hintText="Title" fullWidth={true}
+              errorText={this.state.titleError}
+              onChange={e=>this.change(e)}/><br/>
+            <TextField name="author" id="author" hintText="Author" fullWidth={true}
+              errorText={this.state.authorError}
+              onChange={e=>this.change(e)}/><br/>
+            <TextField name="body" id="body" hintText="Write Post" multiLine={true} rows={2}
+              rowsMax={4} fullWidth={true}
+              errorText={this.state.bodyError}
+              onChange={e=>this.change(e)}/><br/>
             <SelectField value={this.state.category}
-              onChange={this.handleCategoryChange} fullWidth={true} floatingLabelText="Category">
+              onChange={this.handleCategoryChange} fullWidth={true} floatingLabelText="Category"
+              errorText={this.state.categoryError}>
               {keys.filter(key => key !== "All").map((key) => {
                   return <MenuItem key={key} value={categories[key].name} primaryText={categories[key].name}/>
               })}
