@@ -23,14 +23,17 @@ class ListPosts extends Component{
     return display;
   }
 
-  render() {
-    const posts = this.sort()
+  filter(posts) {
     const currCategory = this.props.match.params.category;
+    return posts.filter(post=> currCategory === undefined
+      || currCategory === post.category)
+  }
+
+  render() {
+    let posts = this.filter(this.sort())
     return(
         <List>
-          {posts.filter(post=> currCategory === undefined
-            || currCategory === post.category)
-            .map((post) => {
+          {posts.map((post) => {
               return (<ListItem key={post.id}>
                   <Post {...this.props} id={post.id}/>
                 </ListItem>)

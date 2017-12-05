@@ -39,26 +39,26 @@ class Post extends Component{
 
     render() {
       const post = this.props.posts[this.state.id];
-
-      return(
-        <Card>
-            <Link to={"/"+ post.category +"/"+ post.id}>
-              <CardTitle title={post.title} subtitle={post.author}/>
-            </Link>
-            <CardText>{post.body}</CardText>
-            <CardActions>
-              <FlatButton onClick={event=>this.handleEditPost(event)} label="Edit" icon={<ActionEdit/>}/>
-              <FlatButton onClick={event=>this.handleDeletePost(event, `${post.id}`)} label="Delete" icon={<ActionDelete/>}/>
-              <FlatButton onClick={event=>this.handleUpVotePost(event, `${post.id}`)} label="upVote" icon={<ActionThumbUp/>}/>
-              <FlatButton onClick={event=>this.handleDownVotePost(event, `${post.id}`)}  label="downVote" icon={<ActionThumbDown/>}/>
-            </CardActions>
-            <CardText>
-              <Chip style={{display:"inline-block"}}>Score {post.voteScore}</Chip>
-              <Chip style={{display:"inline-block"}}>{post.category}</Chip>
-              <Chip style={{display:"inline-block"}}>{toDate(post.timestamp)}</Chip>
-              <Chip style={{display:"inline-block"}}>Comment {post.commentCount}</Chip>
-            </CardText>
-        </Card>
+      return(<div>
+          <Card>
+              <Link to={"/"+ post.category +"/"+ post.id}>
+                <CardTitle title={post.title} subtitle={post.author}/>
+              </Link>
+              <CardText>{post.body}</CardText>
+              <CardActions>
+                <FlatButton onClick={event=>this.handleEditPost(event)} label="Edit" icon={<ActionEdit/>}/>
+                <FlatButton onClick={event=>this.handleDeletePost(event, `${post.id}`)} label="Delete" icon={<ActionDelete/>}/>
+                <FlatButton onClick={event=>this.handleUpVotePost(event, `${post.id}`)} label="upVote" icon={<ActionThumbUp/>}/>
+                <FlatButton onClick={event=>this.handleDownVotePost(event, `${post.id}`)}  label="downVote" icon={<ActionThumbDown/>}/>
+              </CardActions>
+              <CardText>
+                <Chip style={{display:"inline-block"}}>Score {post.voteScore}</Chip>
+                <Chip style={{display:"inline-block"}}>{post.category}</Chip>
+                <Chip style={{display:"inline-block"}}>{toDate(post.timestamp)}</Chip>
+                <Chip style={{display:"inline-block"}}>Comment {post.commentCount}</Chip>
+              </CardText>
+          </Card>
+        </div>
       );
     }
 }
