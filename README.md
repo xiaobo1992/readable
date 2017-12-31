@@ -23,5 +23,5 @@ Information about the API server and how to use it can be found in its [README f
 
 ## Screenshots
 <img src="images/redux.png" >
-<img src="images/main.png" >
 <img src="images/post.png" >
+<img src="images/main.png" >
